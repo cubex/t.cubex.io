@@ -1,0 +1,29 @@
+{
+  "name": "cubex/t-cubex-io",
+  "license": "MIT",
+  "type": "project",
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "prefer-stable": true,
+  "require": {
+    "cubex/framework": "^4.0",
+    "packaged/i18n": "^0.5",
+    "filp/whoops": "^2.3"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "CubexTranslate\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:cubex/framework.git"
+    }
+  ]
+}
