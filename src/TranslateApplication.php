@@ -31,12 +31,33 @@ class TranslateApplication extends Controller
       . '<input type="submit" value="Translate" '
       . 'style="padding: 10px; width: 100%; border: 1px solid; '
       . 'background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>'
-      . ($text ? '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">'
-        . '$this->_(\'' . (new TextIDGenerator())->generateId($text) . '\',\'' . addslashes($text) . '\')' . '</p>' :
-        '')
+      . ($text ?
+        '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text) . '</p>'
+        : '')
       . '</form>'
       . '</div>'
     );
+  }
+
+  protected function _createTranslatable($text)
+  {
+    $matches = [];
+    preg_match_all('/\{(\w+)\}/', $text, $matches);
+    $replacements = '';
+    if(!empty($matches[1]))
+    {
+      $arrVals = [];
+      foreach($matches[1] as $match)
+      {
+        $arrVals[] = "'$match' => ''";
+      }
+      $replacements = ', [' . implode(',', $arrVals) . ']';
+    }
+    return '$this->_('
+      . "'" . (new TextIDGenerator())->generateId($text) . "'"
+      . ", '" . addslashes($text) . "'" .
+      $replacements
+      . ')';
   }
 }
