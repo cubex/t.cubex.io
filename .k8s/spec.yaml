@@ -20,7 +20,7 @@ spec:
             name: nginx-config
 
       containers:
-        - image: gcr.io/cubex-oss/t.cubex.io:7b138e399dacba80061cfb9c24c4840b8312a715
+        - image: gcr.io/cubex-oss/t.cubex.io:693d0dca8b839dc952e403cd0e8ac78ac23633ca
           name: fpm
 
         - image: nginx:1.19.0-alpine
