@@ -11,6 +11,8 @@ use Packaged\SafeHtml\SafeHtml;
 
 class TranslateApplication extends Controller
 {
+  private $key;
+
   protected function _generateRoutes()
   {
     yield Route::with(new HealthCheckCondition())->setHandler(
@@ -33,7 +35,9 @@ class TranslateApplication extends Controller
       . 'background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>'
       . ($text ?
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text) . '</p>'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text) . '</p>' .
+        '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->key . '</p>'
         : '')
       . '</form>'
       . '</div>'
@@ -54,8 +58,10 @@ class TranslateApplication extends Controller
       }
       $replacements = ', [' . implode(',', $arrVals) . ']';
     }
+
+    $this->key = (new TextIDGenerator())->generateId($text);
     return '$this->_('
-      . "'" . (new TextIDGenerator())->generateId($text) . "'"
+      . "'" . $this->key . "'"
       . ", '" . addslashes($text) . "'" .
       $replacements
       . ')';
