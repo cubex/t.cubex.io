@@ -11,7 +11,7 @@ use Packaged\SafeHtml\SafeHtml;
 
 class TranslateApplication extends Controller
 {
-  private $key;
+  private $_key;
 
   protected function _generateRoutes()
   {
@@ -37,7 +37,7 @@ class TranslateApplication extends Controller
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
         . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text) . '</p>' .
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->key . '</p>'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_key . '</p>'
         : '')
       . '</form>'
       . '</div>'
@@ -59,9 +59,9 @@ class TranslateApplication extends Controller
       $replacements = ', [' . implode(',', $arrVals) . ']';
     }
 
-    $this->key = (new TextIDGenerator())->generateId($text);
+    $this->_key = (new TextIDGenerator())->generateId($text);
     return '$this->_('
-      . "'" . $this->key . "'"
+      . "'" . $this->_key . "'"
       . ", '" . addslashes($text) . "'" .
       $replacements
       . ')';
