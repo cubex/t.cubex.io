@@ -34,7 +34,7 @@ class TranslateApplication extends Controller
       . 'background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>'
       . ($text ?
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text, $key) . '</p>' .
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($key, $text) . '</p>' .
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
         . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $key . '</p>'
         : '')
@@ -43,7 +43,7 @@ class TranslateApplication extends Controller
     );
   }
 
-  protected function _createTranslatable($text, $key)
+  protected function _createTranslatable($key, $text)
   {
     $matches = [];
     preg_match_all('/\{(\w+)\}/', $text, $matches);
