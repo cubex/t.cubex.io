@@ -11,8 +11,6 @@ use Packaged\SafeHtml\SafeHtml;
 
 class TranslateApplication extends Controller
 {
-  private $_key;
-
   protected function _generateRoutes()
   {
     yield Route::with(new HealthCheckCondition())->setHandler(
