@@ -25,6 +25,7 @@ class TranslateApplication extends Controller
   public function processTranslate(Context $ctx)
   {
     $text = trim($ctx->request()->get('text'));
+    $key = (new TextIDGenerator())->generateId($text);
     return new SafeHtml(
       '<div style="background:#2d2d2d; position: absolute; top:0; left:0; right:0; bottom:0; padding: 10px;">'
       . '<form method="post" action="' . $ctx->request()->path() . '" style="width: 100%; ">'
@@ -35,16 +36,16 @@ class TranslateApplication extends Controller
       . 'background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>'
       . ($text ?
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text) . '</p>' .
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($text, $key) . '</p>' .
         '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_key . '</p>'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $key . '</p>'
         : '')
       . '</form>'
       . '</div>'
     );
   }
 
-  protected function _createTranslatable($text)
+  protected function _createTranslatable($text, $key)
   {
     $matches = [];
     preg_match_all('/\{(\w+)\}/', $text, $matches);
@@ -58,10 +59,8 @@ class TranslateApplication extends Controller
       }
       $replacements = ', [' . implode(',', $arrVals) . ']';
     }
-
-    $this->_key = (new TextIDGenerator())->generateId($text);
     return '$this->_('
-      . "'" . $this->_key . "'"
+      . "'" . $key . "'"
       . ", '" . addslashes($text) . "'" .
       $replacements
       . ')';
