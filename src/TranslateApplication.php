@@ -33,10 +33,12 @@ class TranslateApplication extends Controller
       . 'style="padding: 10px; width: 100%; border: 1px solid; '
       . 'background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>'
       . ($text ?
-        '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $this->_createTranslatable($key, $text) . '</p>' .
-        '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px; ">' . $key . '</p>'
+        '<p style="color: #CCCCCC; font-size: 12px; font-family: Monaco, SF Mono, monospace; margin: 20px 0 -5px 10px;">Code:</p>'
+        . '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px;">' . $this->_createTranslatable($key, $text) . '</p>'
+        . '<p style="color: #CCCCCC; font-size: 12px; font-family: Monaco, SF Mono, monospace; margin: 20px 0 -5px 10px;">Key:</p>'
+        . '<p style="background: #373d44; color: white; padding: 20px; user-select: all;'
+        . 'font-family: Monaco, SF Mono, monospace; font-size:14px;">' . $key . '</p>'
         : '')
       . '</form>'
       . '</div>'
