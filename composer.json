@@ -10,7 +10,7 @@
   "prefer-stable": true,
   "require": {
     "cubex/framework": "^4.0",
-    "packaged/i18n": "^1.1",
+    "packaged/i18n": "^1.3",
     "filp/whoops": "^2.3"
   },
   "require-dev": {
