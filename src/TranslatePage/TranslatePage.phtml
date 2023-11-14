@@ -1,0 +1,38 @@
+<?php
+
+use CubexTranslate\TranslatePage\TranslatePage;
+
+/**
+ * @var TranslatePage $this
+ */
+?>
+
+
+<div style="padding: 10px;">
+  <form method="post" action="<?= $this->getContext()->request()->path() ?>" style="width: 100%; ">
+    <textarea name="text"
+              style="width:100%; min-height:50px; font-size:15px; padding: 15px; background: rgba(255,255,255,0.1); border: 1px solid #454545; color: #c7d7e6"><?= $this->text ?></textarea>
+
+    <input type="submit" value="Translate"
+           style="padding: 10px; width: 100%; border: 1px solid;
+    background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>
+
+    <?php if($this->text): ?>
+      <p style="color: #aaa; font-size: 10px; font-family: Monaco, SF Mono, monospace; margin: 10px 0 0 0;">
+        CODE
+      </p>
+      <p
+        style="background: #373d44; color: white; padding: 15px; margin:5px 0; user-select: all;font-family: Monaco, SF Mono, monospace; font-size:14px;">
+        <?= $this->createTranslatable($this->key, $this->text) ?>
+      </p>
+      <p style="color: #aaa; font-size: 10px; font-family: Monaco, SF Mono, monospace; margin: 10px 0 0 0;">
+        KEY:
+      </p>
+      <p
+        style="background: #373d44; color: white; padding: 15px; margin:5px 0; user-select: all;font-family: Monaco, SF Mono, monospace; font-size:14px;">
+        <?= $this->key ?>
+      </p>
+    <?php endif; ?>
+
+  </form>
+</div>

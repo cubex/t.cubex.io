@@ -2,20 +2,77 @@
 namespace CubexTranslate;
 
 use Cubex\Controller\Controller;
+use CubexTranslate\DecodePage\DecodePage;
+use CubexTranslate\Layout\Layout;
+use CubexTranslate\TranslatePage\TranslatePage;
 use Packaged\Context\Context;
+use Packaged\Dispatch\Dispatch;
+use Packaged\Dispatch\Resources\ResourceFactory;
+use Packaged\Helpers\Path;
 use Packaged\Http\Response;
+use Packaged\Http\Responses\JsonResponse;
+use Packaged\Http\Responses\TextResponse;
 use Packaged\I18n\Tools\TextIDGenerator;
+use Packaged\Routing\Handler\FuncHandler;
 use Packaged\Routing\HealthCheckCondition;
 use Packaged\Routing\Route;
-use Packaged\SafeHtml\SafeHtml;
 
 class TranslateApplication extends Controller
 {
+  const DISPATCH_PATH = '/_res';
+
+  protected function _initialize()
+  {
+    parent::_initialize();
+    $this->_initDispatch();
+  }
+
+  protected function _initDispatch()
+  {
+    $ctx = $this->getContext();
+    $dispatch = new Dispatch($ctx->getProjectRoot(), self::DISPATCH_PATH);
+
+    Dispatch::bind($dispatch);
+  }
+
   protected function _generateRoutes()
   {
     yield Route::with(new HealthCheckCondition())->setHandler(
       function () { return Response::create('OK'); }
     );
+
+    $resourceRoutes = ['manifest.json'];
+    foreach($resourceRoutes as $route)
+    {
+      yield self::_route(
+        '/' . $route,
+        static function (Context $c) use ($route) {
+          return JsonResponse::create(file_get_contents(Path::system($c->getProjectRoot(), 'public/' . $route)));
+        }
+      );
+    }
+
+    $textRoutes = ['service-worker.js', 'icon512_maskable.png', 'icon512_rounded.png'];
+    foreach($textRoutes as $route)
+    {
+      yield self::_route(
+        '/' . $route,
+        static function (Context $c) use ($route) {
+          return ResourceFactory::fromFile(Path::system($c->getProjectRoot(), 'public/' . $route));
+        }
+      );
+    }
+
+    yield self::_route(
+      self::DISPATCH_PATH,
+      new FuncHandler(
+        static function (Context $c) {
+          return Dispatch::instance()->handleRequest($c->request());
+        }
+      )
+    );
+
+    yield self::_route('/decode', 'decode');
 
     return 'translate';
   }
@@ -24,44 +81,30 @@ class TranslateApplication extends Controller
   {
     $text = trim($ctx->request()->get('text'));
     $key = (new TextIDGenerator())->generateId($text);
-    return new SafeHtml(
-      '<div style="background:#2d2d2d; position: absolute; top:0; left:0; right:0; bottom:0; padding: 10px;">'
-      . '<form method="post" action="' . $ctx->request()->path() . '" style="width: 100%; ">'
-      . '<textarea name="text" style="width:100%; min-height:50px; font-size:15px; padding: 15px; '
-      . 'background: rgba(255,255,255,0.1); border: 1px solid #454545; color: #c7d7e6">' . $text . '</textarea>'
-      . '<input type="submit" value="Translate" '
-      . 'style="padding: 10px; width: 100%; border: 1px solid; '
-      . 'background: #3c49aa; color: #c4c6da; font-size: 14px; margin-top: 10px;"/>'
-      . ($text ?
-        '<p style="color: #aaa; font-size: 10px; font-family: Monaco, SF Mono, monospace; margin: 10px 0 0 0;">CODE:</p>'
-        . '<p style="background: #373d44; color: white; padding: 15px; margin:5px 0; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px;">' . $this->_createTranslatable(
-          $key,
-          $text
-        ) . '</p>'
-        . '<p style="color: #aaa; font-size: 10px; font-family: Monaco, SF Mono, monospace; margin: 10px 0 0 0;">KEY:</p>'
-        . '<p style="background: #373d44; color: white; padding: 15px; margin:5px 0; user-select: all;'
-        . 'font-family: Monaco, SF Mono, monospace; font-size:14px;">' . $key . '</p>'
-        : '')
-      . '</form>'
-      . '</div>'
-    );
+
+    return TranslatePage::withContext($this, $key, $text);
   }
 
-  protected function _createTranslatable($key, $text)
+  public function processDecode(Context $ctx)
   {
-    $matches = [];
-    preg_match_all('/\{(\w+)\}/', $text, $matches);
-    $replacements = '';
-    if(!empty($matches[1]))
+    return DecodePage::withContext($this);
+  }
+
+  protected function _prepareResponse(Context $c, $result, $buffer = null)
+  {
+    if(!$this->_isAppropriateResponse($result))
     {
-      $arrVals = [];
-      foreach($matches[1] as $match)
-      {
-        $arrVals[] = "'$match' => ''";
-      }
-      $replacements = ', [' . implode(',', $arrVals) . ']';
+      return parent::_prepareResponse($c, $result, $buffer);
     }
-    return '$this->_(' . "'" . $key . "'" . ", '" . addcslashes($text, "'") . "'" . $replacements . ')';
+
+    $theme = Layout::withContext($this);
+    $theme->setContent($result);
+
+    return parent::_prepareResponse($c, $theme, $buffer);
+  }
+
+  protected function _isAppropriateResponse($result): bool
+  {
+    return $result instanceof AbstractPage || is_scalar($result) || is_array($result);
   }
 }
