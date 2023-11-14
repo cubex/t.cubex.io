@@ -6,32 +6,37 @@ let src = document.getElementById('editor');
 let output = document.getElementById('result');
 
 if (src || output) {
-  src.onchange = render;
-  src.onpaste = () => setTimeout(render, 100);
+    src.onchange = render;
+    src.onpaste = () => setTimeout(render, 100);
 
-  render();
+    render();
 }
 
 function render() {
-  // @ts-ignore
-  let jsnVal = src.value;
-  try {
-    jsnVal = base64.decode(jsnVal);
-  } catch (e) {
-  }
+    // @ts-ignore
+    let jsnVal = src.value;
+    try {
+        jsnVal = base64.decode(jsnVal);
+    } catch (e) {
+    }
 
-  if (jsnVal === '') {
-    return
-  }
+    if (jsnVal === '') {
+        return
+    }
 
-  let jsnDec = null;
-  try {
-    jsnDec = JSON.parse(jsnVal)
-    const formatter = new JSONFormatter(jsnDec);
-    output.innerHTML = ''
-    output.appendChild(formatter.render());
-    formatter.openAtDepth(100);
-  } catch (e) {
-    output.innerHTML = e
-  }
+    let jsnDec = null;
+    try {
+        jsnDec = JSON.parse(jsnVal)
+
+        try {
+            const formatter = new JSONFormatter(jsnDec);
+            output.innerHTML = ''
+            output.appendChild(formatter.render());
+            formatter.openAtDepth(100);
+        } catch (e) {
+            output.innerHTML = e
+        }
+    } catch (e) {
+        output.innerHTML = jsnVal
+    }
 }
