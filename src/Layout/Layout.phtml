@@ -1,0 +1,58 @@
+<?php
+
+use CubexTranslate\Layout\Layout;
+use Packaged\Dispatch\Dispatch;
+use Packaged\Dispatch\ResourceStore;
+
+/**
+ * @var Layout $this
+ */
+
+$ctx = $this->getContext();
+$store = Dispatch::instance()->store();
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Cubex Browser Tools</title>
+  <meta name="theme-color" content="#2d2d2d">
+  <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+  <script>
+    if('serviceWorker' in navigator)
+    {
+      window.addEventListener('load', () =>
+      {
+        navigator.serviceWorker.register('service-worker.js').then(function (registration)
+        {
+          console.log('ServiceWorker registered');
+        }).catch(function (err)
+        {
+          console.log('ServiceWorker error: ', err);
+        });
+      });
+    }
+  </script>
+  <?= $store->generateHtmlIncludes() ?>
+</head>
+<body>
+<header class="nav">
+  <a href="/">Cubex Browser Tools</a>
+  <ul>
+    <li>
+      <a href="/">Translate</a>
+    </li>
+    <li>
+      <a href="/decode">Decode</a>
+    </li>
+  </ul>
+</header>
+
+<?= $this->getContent() ?>
+<?= $store->generateHtmlIncludes(ResourceStore::TYPE_JS) ?>
+</body>
+</html>

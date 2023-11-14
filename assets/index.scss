@@ -1,0 +1,43 @@
+@use "./scss/decode-page";
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  background-color: #2d2d2d;
+  color: #fff;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1025px;
+  margin: auto;
+  padding: 20px;
+  height: 70px;
+  align-items: center;
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      color: #3b48a4;
+    }
+  }
+}
