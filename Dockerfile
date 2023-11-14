@@ -24,6 +24,6 @@ USER nobody
 
 COPY --chown=nobody ./src /site/src/
 COPY --chown=nobody ./conf /site/conf/
-COPY --chown=nobody ./public /site/html/
+COPY --chown=nobody ./public /site/public/
 COPY --chown=nobody --from=node-build /build/resources /site/resources/
 COPY --chown=nobody --from=composer /build/vendor /site/vendor/
