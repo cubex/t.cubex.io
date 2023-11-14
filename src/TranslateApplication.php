@@ -47,7 +47,7 @@ class TranslateApplication extends Controller
       yield self::_route(
         '/' . $route,
         static function (Context $c) use ($route) {
-          return JsonResponse::create(file_get_contents(Path::system($c->getProjectRoot(), 'public/' . $route)));
+          return JsonResponse::raw(file_get_contents(Path::system($c->getProjectRoot(), 'public/' . $route)));
         }
       );
     }
