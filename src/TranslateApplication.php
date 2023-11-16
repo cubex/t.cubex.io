@@ -98,10 +98,6 @@ class TranslateApplication extends Controller
 
     $theme = Layout::withContext($this);
     $theme->setContent($result);
-    if($result instanceof AbstractPage)
-    {
-      $theme->setPageClasses($result->pageClasses());
-    }
 
     return parent::_prepareResponse($c, $theme, $buffer);
   }

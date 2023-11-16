@@ -15,7 +15,6 @@ class Layout extends Element implements ContextAware, WithContext
   use WithContextTrait;
 
   protected $_content = null;
-  protected $_pageClasses = '';
 
   public function getContent()
   {
@@ -32,16 +31,5 @@ class Layout extends Element implements ContextAware, WithContext
   {
     ResourceManager::resources()->requireCss('core.css')->requireJs('core.js');
     return parent::render();
-  }
-
-  public function getPageClasses()
-  {
-    return $this->_pageClasses;
-  }
-
-  public function setPageClasses($pageClasses): self
-  {
-    $this->_pageClasses = $pageClasses;
-    return $this;
   }
 }
