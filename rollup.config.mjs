@@ -5,12 +5,13 @@ import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import postcssComments from 'postcss-discard-comments';
 import autoprefixer from 'autoprefixer';
+import copy from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
 
 const postcssPlugins = [
   autoprefixer(),
-  postcssComments({'removeAll': true}),
+  postcssComments({'removeAll': true})
 ];
 
 export default {
@@ -26,10 +27,16 @@ export default {
     typescript({'sourceMap': !production}),
     commonjs(),
     postcss({
-      extract:   true,
-      minimize:  production,
+      extract: true,
+      minimize: production,
       sourceMap: !production,
-      plugins:   postcssPlugins
+      plugins: postcssPlugins
+    }),
+    copy({
+      targets: [
+        {src: 'assets/img/*', dest: 'resources/img'},
+        {src: 'assets/font/*', dest: 'resources/font'}
+      ]
     }),
     production && terser({format: {comments: false}})
   ]

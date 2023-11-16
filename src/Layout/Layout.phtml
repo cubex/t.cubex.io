@@ -39,7 +39,7 @@ $store = Dispatch::instance()->store();
   </script>
   <?= $store->generateHtmlIncludes() ?>
 </head>
-<body>
+<body class="<?= $this->getPageClasses()?>">
 <header class="nav">
   <a href="/">Cubex Browser Tools</a>
   <ul>

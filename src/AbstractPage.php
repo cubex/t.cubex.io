@@ -14,4 +14,9 @@ class AbstractPage extends TemplatedHtmlElement implements WithContext, ContextA
   use TemplateLoaderTrait;
   use ContextAwareTrait;
   use WithContextTrait;
+
+  function pageClasses()
+  {
+    return '';
+  }
 }

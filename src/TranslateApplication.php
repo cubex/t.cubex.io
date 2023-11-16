@@ -11,7 +11,6 @@ use Packaged\Dispatch\Resources\ResourceFactory;
 use Packaged\Helpers\Path;
 use Packaged\Http\Response;
 use Packaged\Http\Responses\JsonResponse;
-use Packaged\Http\Responses\TextResponse;
 use Packaged\I18n\Tools\TextIDGenerator;
 use Packaged\Routing\Handler\FuncHandler;
 use Packaged\Routing\HealthCheckCondition;
@@ -99,6 +98,10 @@ class TranslateApplication extends Controller
 
     $theme = Layout::withContext($this);
     $theme->setContent($result);
+    if($result instanceof AbstractPage)
+    {
+      $theme->setPageClasses($result->pageClasses());
+    }
 
     return parent::_prepareResponse($c, $theme, $buffer);
   }

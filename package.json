@@ -4,8 +4,7 @@
     "watch": "rollup -c -w"
   },
   "dependencies": {
-    "base-64": "^1.0.0",
-    "json-formatter-js": "^2.3.4"
+    "base-64": "^1.0.0"
   },
   "devDependencies": {
     "@packaged-ui/pagelets": "^2.3.11",

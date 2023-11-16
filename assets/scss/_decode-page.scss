@@ -1,17 +1,13 @@
-ol, ul {
-  list-style-type: none
+ul, li, ol {
+  list-style-type: none;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
-.ui-notification {
-  background: #FF8;
-  font: 12px/24px arial, sans-serif;
-  display: none;
-  margin: 0 0 0 -4px;
-  padding: 0 10px;
-  position: fixed;
-  text-align: center;
-  top: 0;
-  z-index: 10
+ul, ol {
+  margin: 0 0 0 2px;
+  padding: 0 0 0 23px;
 }
 
 .status-error {
@@ -20,31 +16,14 @@ ol, ul {
   display: inline-block
 }
 
-.ui-editor {
+.left {
   float: left;
   height: calc(100% - 70px);
   position: relative;
   width: 50%
 }
 
-.ui-resizer {
-  background: #CCC;
-  border: solid #CCC;
-  border-width: 0 1px;
-  bottom: 0;
-  cursor: ew-resize;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 1px
-}
-
-.resizing, .resizing:hover, .ui-resizer:hover {
-  background: #EEE;
-  border-color: #EEE
-}
-
-.ui-field {
+.input {
   border: 0;
   color: #e1e1e1;
   height: 100%;
@@ -54,144 +33,58 @@ ol, ul {
   overflow: hidden;
   padding: 30px;
   resize: none;
-  width: calc(100% - 5px)
-}
+  width: calc(100% - 5px);
 
-.ui-field:focus {
-  color: #ffffff
-}
+  &:focus {
+    color: #ffffff
+  }
 
-.ui-field:hover {
-  overflow: auto
+  &:hover {
+    overflow: auto
+  }
 }
 
 textarea {
-  background-color: #1a1a1a;
+  background-color: #2d2d2d;
   color: white;
 }
 
-.ui-aside {
-  background: #d5d5d5;
+.right {
+  background: #ffffff;
+  color: black;
   height: calc(100% - 70px);
   overflow: hidden;
-  position: relative
+  position: relative;
+
+  &:hover {
+    overflow: auto
+  }
 }
 
-.ui-aside:hover {
-  overflow: auto
-}
-
-.ui-treeview {
+.code {
   cursor: default;
   padding: 30px;
-  position: relative
-}
-
-
-.beautify #beautify::before, .show-indexes #show-indexes::before, .show-types #show-types::before {
-  content: '✔'
+  position: relative;
+  font-family: monospace;
+  line-height: 152%;
+  word-wrap: break-word
 }
 
 @media (max-width: 500px) {
-  .ui-editor {
+  .left {
     float: none;
     height: 50%;
     width: 100%
   }
 
-  .ui-field {
+  .input {
     height: calc(100% - 5px);
     width: 100%
   }
 
-  .ui-resizer {
-    border-width: 2px 0;
-    bottom: 0;
-    cursor: ns-resize;
-    height: 1px;
-    left: 0;
-    top: auto;
-    width: 100%
-  }
-
-  .ui-aside {
+  .right {
     height: 50%
   }
-}
-
-.popup-container {
-  background: rgba(0, 0, 0, .8);
-  display: none;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 2
-}
-
-.popup-container.show {
-  display: table
-}
-
-.popup-centerer {
-  cursor: pointer;
-  display: table-cell;
-  vertical-align: middle
-}
-
-.popup {
-  background: url(img/avatar.png) #FFF bottom center no-repeat;
-  border: solid 10px #FFF;
-  border-radius: 50%;
-  cursor: default;
-  font-family: Ubuntu, Arial, Helvetica, sans-serif;
-  height: 290px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 50%;
-  padding: 4em 5em 6em;
-  position: relative;
-  text-align: center;
-  width: 290px
-}
-
-.links {
-  font-size: 73%;
-  margin-top: 1.4em
-}
-
-.link {
-  color: #1e90ff;
-  cursor: pointer;
-  text-decoration: underline
-}
-
-.title {
-  font-size: 140%;
-  font-weight: 700
-}
-
-small {
-  font-size: 73%
-}
-
-.bitcoin {
-  background-image: none
-}
-
-.bitcoin .main, .second {
-  display: none
-}
-
-.bitcoin .second, .main {
-  display: block;
-  margin: 0 -3em
-}
-
-.json {
-  font-family: monospace;
-  line-height: 152%;
-  word-wrap: break-word
 }
 
 .property {
@@ -237,54 +130,6 @@ small {
 
 .error:hover::after {
   background: rgba(255, 0, 0, .8)
-}
-
-.show-indexes ol {
-  counter-reset: idx -1
-}
-
-.show-indexes ol > li::before {
-  color: #A40000;
-  content: counter(idx) '.';
-  counter-increment: idx;
-  font-family: arial;
-  font-weight: 700;
-  padding: 0 5px 0 0;
-  vertical-align: bottom
-}
-
-.show-indexes.color ol > li::before {
-  background-color: #a40000
-}
-
-li, ol, ul {
-  display: inline;
-  margin: 0;
-  padding: 0
-}
-
-.beautify li, .beautify ol, .beautify ul {
-  border-left: solid 1px transparent;
-  display: block
-}
-
-.beautify ol, .beautify ul {
-  margin: 0 0 0 2px;
-  padding: 0 0 0 23px
-}
-
-.beautify ol {
-  border-radius: 10px 0 0
-}
-
-.collapsed > .toggle-end, .toggle {
-  cursor: pointer;
-  margin: -10px;
-  padding: 10px
-}
-
-.collapsed:hover > .toggle, .collapsed:hover > .toggle-end, .toggle:hover, .toggle:hover ~ .toggle-end {
-  font-weight: 700
 }
 
 .toggle:hover::before {
@@ -337,38 +182,4 @@ li, ol, ul {
 .collapsed.array .toggle-end::before {
   content: attr(card);
   display: inline
-}
-
-.array::before, .boolean::before, .number::before, .object::before, .string::before {
-  border-radius: 2px;
-  color: #FFF;
-  margin: 0 2px;
-  opacity: .4;
-  padding: .1em .2em;
-  word-wrap: normal
-}
-
-.show-types .object::before {
-  background-color: #729fcf;
-  content: 'object'
-}
-
-.show-types .array::before {
-  background-color: #a40000;
-  content: 'array'
-}
-
-.show-types .number::before {
-  background-color: #ad7fa8;
-  content: 'number'
-}
-
-.show-types .string::before {
-  background-color: #4e9a06;
-  content: 'string'
-}
-
-.show-types .boolean::before {
-  background-color: #c4a000;
-  content: 'boolean'
 }
