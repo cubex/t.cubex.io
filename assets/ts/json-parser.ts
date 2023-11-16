@@ -143,16 +143,23 @@ class Parser {
         }
       }
 
+      let base = value;
       const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-      if (base64regex.test(value.replace(/"/g, '')) && value.replace(/"/g, '').endsWith('=')) {
+      if (base64regex.test(value.replace(/"/g, ''))) {
         try {
           value = base64.decode(value.replace(/"/g, ''));
           value = "\"" + value + "\"";
         } catch (e) {
         }
+
+        // check for non ascii characters
+        if (value.search(/[^ -~]/g) !== -1) {
+          value = base;
+        }
       }
 
-      if (value.replace(/"/g, '').startsWith('{') && value.replace(/"/g, '').endsWith('}')) {
+      if ((value.replace(/"/g, '').startsWith('{') || value.replace(/"/g, '').startsWith('[')) &&
+        (value.replace(/"/g, '').endsWith('}') || value.replace(/"/g, '').endsWith(']'))) {
         value = value.replace(/\\"/g, '"');
         value = value.substring(1, value.length - 1);
         value = this.parseObject(new Snatch(value));
@@ -376,7 +383,7 @@ function analyze() {
 
   let json = $editor.value;
   const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-  if (base64regex.test(json) && json.endsWith('=')) {
+  if (base64regex.test(json)) {
     try {
       json = base64.decode(json);
     } catch (e) {
