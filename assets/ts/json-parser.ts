@@ -149,18 +149,28 @@ class Parser {
         try {
           value = base64.decode(value.replace(/"/g, ''));
           value = "\"" + value + "\"";
+          console.log('value', value);
         } catch (e) {
         }
 
         // check for non ascii characters
-        if (value.search(/[^ -~]/g) !== -1) {
+        if (value.search(/[^ -~]/g) !== -1 && !value.startsWith("\"<?xml")) {
           value = base;
         }
       }
 
+      if (value.startsWith("\"<?xml")) {
+        value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return snatch.span("string", value);
+      }
+
+      // remove double escaped double quotes
+      value = value.replace(/\\\\"/g, '\\"');
+      // remove escaped double quotes
+      value = value.replace(/\\"/g, '"');
+
       if ((value.replace(/"/g, '').startsWith('{') || value.replace(/"/g, '').startsWith('[')) &&
         (value.replace(/"/g, '').endsWith('}') || value.replace(/"/g, '').endsWith(']'))) {
-        value = value.replace(/\\"/g, '"');
         value = value.substring(1, value.length - 1);
         value = this.parseObject(new Snatch(value));
       }
