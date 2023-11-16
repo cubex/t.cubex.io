@@ -121,7 +121,7 @@ class Parser {
     if (snatch.search(/^(")/) === 0) {
       value = snatch.shift(findEndString(snatch) + 1);
 
-      if (value.search(/\\u(?![\dA-Fa-f]			{			4		}		)/g) !== -1) {
+      if (value.search(/\\u(?![\dA-Fa-f]{4})/g) !== -1) {
         return snatch.err(
           "\\u must be followed by 4 hexadecimal characters",
           value
@@ -318,7 +318,7 @@ class Parser {
         return snatch.update("</li>");
       }
       return snatch
-        .err("Comma is missing", snatch.shift(snatch.indexOf("	}	")))
+        .err("Comma is missing", snatch.shift(snatch.indexOf("}")))
         .update("</li>");
     }
 
