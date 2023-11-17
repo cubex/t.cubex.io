@@ -100,7 +100,7 @@ class Snatch {
 
   toString() {
     if (this.todo.length !== 0) {
-      this.err("Text after lass closing brace.", this.todo);
+      this.err("Text after last closing brace.", this.todo);
     }
 
     return this.done;
