@@ -17,6 +17,10 @@ export function rtrim(s: string) {
   return s.replace(/\s+$/g, "");
 }
 
+export function containsXML(s: string) {
+  return (s.substring(0, 5) === "<?xml" || s.search(/xmlns=/) !== -1);
+}
+
 export function ltrim(s: string) {
   return s.replace(/^\s+/g, "");
 }
@@ -41,7 +45,6 @@ export function findEndString(snatch: Snatch) {
   } while (true);
   return current;
 }
-
 
 function formatXml(xml: string) {
   var formatted = '';
@@ -186,12 +189,12 @@ class Parser {
         }
 
         // check for non ascii characters
-        if (value.search(/[^ -~]/g) !== -1 && !value.startsWith("\"<?xml")) {
+        if (value.search(/[^ -~]/g) !== -1 && !containsXML(value)) {
           value = base;
         }
       }
 
-      if (value.startsWith("\"<?xml")) {
+      if (containsXML(value)) {
         try {
           value = formatXml(value.substring(1, value.length - 1));
           value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/ /g, '&nbsp;').replace(/\n/g, '<br />');
@@ -433,11 +436,22 @@ function analyze() {
     try {
       json = base64.decode(json);
     } catch (e) {
+      console.log(e)
     }
   }
 
   if (trim(json) === "") {
     $result.innerHTML = "";
+    $status.innerHTML = "";
+    $status.classList.remove("status-error");
+    return;
+  }
+
+  // string starts with <?xml or contains xmlns=
+  if (containsXML(json)) {
+    let value = formatXml(json);
+    value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/ /g, '&nbsp;').replace(/\n/g, '<br />');
+    $result.innerHTML = value;
     $status.innerHTML = "";
     $status.classList.remove("status-error");
     return;
