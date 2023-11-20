@@ -21,6 +21,10 @@ export function containsXML(s: string) {
   return (s.substring(0, 5) === "<?xml" || s.search(/xmlns=/) !== -1);
 }
 
+export function containsValidChars(s: string) {
+  return /^[\x00-\x7F]*$/.test(s);
+}
+
 export function ltrim(s: string) {
   return s.replace(/^\s+/g, "");
 }
@@ -184,12 +188,12 @@ class Parser {
         try {
           value = base64.decode(value.replace(/"/g, ''));
           value = "\"" + value + "\"";
-          console.log('value', value);
         } catch (e) {
+          console.log(e);
         }
 
         // check for non ascii characters
-        if (value.search(/[^ -~]/g) !== -1 && !containsXML(value)) {
+        if (!containsXML(value) && !containsValidChars(value)) {
           value = base;
         }
       }
