@@ -7,7 +7,7 @@ import postcssComments from 'postcss-discard-comments';
 import autoprefixer from 'autoprefixer';
 import copy from 'rollup-plugin-copy';
 
-const production = !process.env.ROLLUP_WATCH;
+const production = true
 
 const postcssPlugins = [
   autoprefixer(),
