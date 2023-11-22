@@ -18,7 +18,7 @@ export function rtrim(s: string) {
 }
 
 export function containsXML(s: string) {
-  return (s.substring(0, 5) === "<?xml" || s.search(/xmlns=/) !== -1);
+  return (s.substring(0, 5) === "<?xml" || s.search(/xmlns=/) !== -1 || s.startsWith('<'));
 }
 
 export function containsValidChars(s: string) {
