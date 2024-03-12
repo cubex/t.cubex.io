@@ -3,6 +3,7 @@ namespace CubexTranslate;
 
 use Cubex\Controller\Controller;
 use CubexTranslate\DecodePage\DecodePage;
+use CubexTranslate\EncodePage\EncodePage;
 use CubexTranslate\Layout\Layout;
 use CubexTranslate\TranslatePage\TranslatePage;
 use Packaged\Context\Context;
@@ -72,6 +73,7 @@ class TranslateApplication extends Controller
     );
 
     yield self::_route('/decode', 'decode');
+    yield self::_route('/encode', 'encode');
 
     return 'translate';
   }
@@ -87,6 +89,11 @@ class TranslateApplication extends Controller
   public function processDecode(Context $ctx)
   {
     return DecodePage::withContext($this);
+  }
+
+  public function processEncode(Context $ctx)
+  {
+    return EncodePage::withContext($this);
   }
 
   protected function _prepareResponse(Context $c, $result, $buffer = null)
