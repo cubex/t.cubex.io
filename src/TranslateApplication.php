@@ -80,7 +80,7 @@ class TranslateApplication extends Controller
 
   public function processTranslate(Context $ctx)
   {
-    $text = trim($ctx->request()->get('text'));
+    $text = trim($ctx->request()->get('text') ?? '');
     $key = (new TextIDGenerator())->generateId($text);
 
     return TranslatePage::withContext($this, $key, $text);
