@@ -52,7 +52,13 @@ class TranslateApplication extends Controller
       );
     }
 
-    $textRoutes = ['service-worker.js', 'icon512_maskable.png', 'icon512_rounded.png'];
+    $textRoutes = [
+      'service-worker.js',
+      'icon512_maskable.png',
+      'icon512_rounded.png',
+      'screenshot1.jpg',
+      'screenshot2.jpg',
+    ];
     foreach($textRoutes as $route)
     {
       yield self::_route(
