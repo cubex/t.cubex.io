@@ -4,7 +4,7 @@ const routing = workbox.routing;
 const strategies = workbox.strategies;
 
 workbox.routing.registerRoute(
-  /.(?:css|js|jsx|json)(?|$)/,
+  /\.(?:js|css|webp|png|svg)$/,
   new workbox.strategies.StaleWhileRevalidate({
     'cacheName': 'assets',
     plugins: [
@@ -17,7 +17,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /.(?:png|jpg|jpeg|gif|woff2)$/,
+  /\.(?:png|jpg|jpeg|gif|avif|webp)$/,
   new workbox.strategies.CacheFirst({
     'cacheName': 'images',
     plugins: [
@@ -31,8 +31,8 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /(\/)$/,
-  new workbox.strategies.StaleWhileRevalidate({
-    'cacheName': 'startPage',
+  new workbox.strategies.NetworkFirst({
+    'cacheName': 'html',
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 1000,
