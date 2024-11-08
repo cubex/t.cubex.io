@@ -25,13 +25,10 @@ $store = Dispatch::instance()->store();
   <script>
     if('serviceWorker' in navigator)
     {
-      window.addEventListener('load', () =>
-      {
-        navigator.serviceWorker.register('service-worker.js').then(function (registration)
-        {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').then(function (registration) {
           console.log('ServiceWorker registered');
-        }).catch(function (err)
-        {
+        }).catch(function (err) {
           console.log('ServiceWorker error: ', err);
         });
       });
@@ -41,11 +38,10 @@ $store = Dispatch::instance()->store();
 </head>
 <body>
 <header class="nav">
-  <a href="/">Cubex Tools</a>
   <ul>
-    <li><a href="/">Translate</a></li>
     <li><a href="/decode">Decode</a></li>
     <li><a href="/encode">Encode</a></li>
+    <li><a href="/translate">Translate</a></li>
   </ul>
 </header>
 

@@ -78,10 +78,11 @@ class TranslateApplication extends Controller
       )
     );
 
+    yield self::_route('/translate', 'translate');
     yield self::_route('/decode', 'decode');
     yield self::_route('/encode', 'encode');
 
-    return 'translate';
+    return 'decode';
   }
 
   public function processTranslate(Context $ctx)
